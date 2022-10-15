@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<form xmlns="http://www.demandware.com/xml/form/2008-04-19">
+
+ <!-- use set friend name -->
+    <field formid="name" label="label.input.friend.name" type="string" mandatory="true"
+    	binding="name"   max-length="20" missing-error="error.message.required" range-error="error.message.20orless"/>
+
+<!-- use set friend phone number -->
+    <field formid="phone" label="label.input.phonenumber" description="friend.phone.example" type="string" mandatory="true" 
+           binding="phone" min-length="10" max-length="20"
+           missing-error="error.message.required"
+           range-error="error.message.between10and20"
+           parse-error="error.message.parse.phone"
+           />
+
+<!-- use set friend date of birth -->
+<field formid="date" type="string" missing-error="error.message.required.date" binding="date"  mandatory="true" label="label.input.date.profile" />
+
+<!-- use set friend nickname -->
+    <field formid="nickname" label="label.input.friend.nickname" type="string" mandatory="true" binding="nickname" max-length="50"
+           missing-error="error.message.required" range-error="error.message.50orless"/>
+
+
+    <!-- actions provided by the edit friend data -->
+    <action formid="apply" valid-form="true"/>
+    <action formid="remove" valid-form="false"/>
+</form>

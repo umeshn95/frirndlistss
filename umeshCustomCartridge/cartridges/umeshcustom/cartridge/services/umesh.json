@@ -1,0 +1,19 @@
+{
+    "hooks": [
+
+      {
+        "name": "app.customhook",
+        "script": "./UmeshRequestCustom"
+      },
+      {
+        "name": "umesh.custom.hook.test",
+        "script":"./cartridge/scripts/hooks/customUmeshHook.js"
+      }
+    ]
+  }
+
+
+  // {
+  //   "name": "dw.system.request.onRequest",
+  //   "script": "./UmeshRequest"
+  // },

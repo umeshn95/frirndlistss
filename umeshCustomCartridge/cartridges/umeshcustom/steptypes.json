@@ -1,0 +1,128 @@
+{
+    "step-types": {
+      "script-module-step": [{
+          "@type-id": "custom.AashuJsonJob11",
+          "@supports-parallel-execution": "true",
+          "@supports-site-context": "true",
+          "@supports-organization-context": "true",
+          "description": "My custom script step type",
+          "module": "app_custom_aashu/cartridge/scripts/job/jobScripts.js",
+          "function": "execute",
+          "transactional": "false",
+          "timeout-in-seconds": "900",
+          "parameters": {
+            "parameter": [
+
+              {
+                "@name": "name",
+                "@type": "string",
+                "@required": "false",
+                "description": "An optional string parameter, length must be between 10 and 50",
+                "min-length": "10",
+                "max-length": "50"
+              }
+
+            ]
+          },
+          "status-codes": {
+            "status": [{
+                "@code": "ERROR",
+                "description": "Used when the step failed with an error."
+              },
+              {
+                "@code": "FINISHED",
+                "description": "Used when the step finished successfully."
+              },
+              {
+                "@code": "FINISHED_WITH_WARNINGS",
+                "description": "Used when the step finished with warnings."
+              }
+            ]
+          }
+        },
+        {
+          "@type-id": "custom.MailsendJobUmesh",
+          "@supports-parallel-execution": "true",
+          "@supports-site-context": "true",
+          "@supports-organization-context": "false",
+          "description": "My custom script step type for sending mails",
+          "module": "umeshcustom/cartridge/scripts/job/sendMailCronScript.js",
+          "function": "sendResponsesMails",
+          "transactional": "true",
+          "timeout-in-seconds": "900",
+
+          "status-codes": {
+            "status": [{
+                "@code": "ERROR",
+                "description": "Used when the step failed with an error."
+              },
+              {
+                "@code": "FINISHED",
+                "description": "Used when the step finished successfully."
+              },
+              {
+                "@code": "FINISHED_WITH_WARNINGS",
+                "description": "Used when the step finished with warnings."
+              }
+            ]
+          }
+        },
+        {
+          "@type-id": "custom.UpdateProductWineStatus1",
+          "@supports-parallel-execution": "true",
+          "@supports-site-context": "true",
+          "@supports-organization-context": "true",
+          "description": "My custom script step type for contact us",
+          "module": "app_custom_aashu/cartridge/scripts/job/jobScripts.js",
+          "function": "productNoWine",
+          "transactional": "true",
+          "timeout-in-seconds": "900",
+          "parameters": {
+            "parameter": []
+          },
+          "status-codes": {
+            "status": [{
+                "@code": "ERROR",
+                "description": "Used when the step failed with an error."
+              },
+              {
+                "@code": "FINISHED",
+                "description": "Used when the step finished successfully."
+              },
+              {
+                "@code": "FINISHED_WITH_WARNINGS",
+                "description": "Used when the step finished with warnings."
+              }
+            ]
+          }
+        }
+      ],
+
+      "chunk-script-module-step": [{
+        "@type-id": "custom.mySendMailCron11",
+        "@supports-parallel-execution": "false",
+        "@supports-site-context": "true",
+        "@supports-organization-context": "true",
+        "description": "My custom chunk script step  for sending the mails",
+        "module": "app_custom_aashu/cartridge/scripts/job/sendMailCronScript.js",
+
+        "read-function": "",
+        "process-function": "",
+        "write-function": "",
+        "chunk-size": 5,
+        "transactional": "true",
+  
+        "status-codes": {
+          "status": [{
+              "@code": "ERROR",
+              "description": "Used when the step failed with an error."
+            },
+            {
+              "@code": "OK",
+              "description": "Used when the step finished successfully."
+            }
+          ]
+        }
+      }]
+    }
+  }

@@ -1,0 +1,68 @@
+<form action="${URLUtils.url('AddFriend-SaveFriend', 'addressId', pdict.addressId)}"class="registration" method="POST" name="${pdict.profileForm.htmlName}">
+
+    <div class="form-group
+        <isif condition=" ${!!pdict.FriendDataForm.name.mandatory === true}">required</isif>">
+        <label class="form-control-label" for="registration-form-fname">
+            <isprint value="${pdict.FriendDataForm.name.label}" encoding="htmlcontent" />
+        </label>
+        <input type="text" class="form-control" id="registration-form-fname"
+            data-missing-error="${Resource.msg('error.message.required', 'forms', null)}"
+            data-range-error="${Resource.msg('error.message.50orless', 'forms', null)}"
+            aria-describedby="form-fname-error" <isprint value=${pdict.FriendDataForm.name.attributes}
+            encoding="off" />>
+        <div class="invalid-feedback" id="form-fname-error"></div>
+    </div>
+
+    <div class="form-group
+        <isif condition=" ${!!pdict.FriendDataForm.nickname.mandatory === true}">required</isif>">
+        <label class="form-control-label" for="registration-form-lname">
+            <isprint value="${pdict.FriendDataForm.nickname.label}" encoding="htmlcontent" />
+        </label>
+        <input type="text" class="form-control" id="registration-form-lname"
+            data-missing-error="${Resource.msg('error.message.required', 'forms', null)}"
+            data-range-error="${Resource.msg('error.message.50orless', 'forms', null)}"
+            aria-describedby="form-lname-error" <isprint value=${pdict.FriendDataForm.nickname.attributes}
+            encoding="off" />>
+        <div class="invalid-feedback" id="form-lname-error"></div>
+    </div>
+
+    <div class="form-group
+        <isif condition=" ${!!pdict.FriendDataForm.date.mandatory === true}">required</isif>">
+        <label class="form-control-label" for="registration-form-lname">
+            <isprint value="${pdict.FriendDataForm.date.label}" encoding="htmlcontent" />
+        </label>
+        <input data-missing-error="${Resource.msg('error.message.required.date', 'forms', null)}" type="date"
+            class="form-control" id="registration-form-lname"
+            data-range-error="${Resource.msg('error.message.50orless', 'forms', null)}"
+            aria-describedby="form-lname-error" <isprint value=${pdict.FriendDataForm.date.attributes}
+            encoding="off" />>
+        <div class="invalid-feedback" id="form-lname-error"></div>
+    </div>
+
+    <div class="form-group
+        <isif condition=" ${!!pdict.FriendDataForm.phone.mandatory === true}">required</isif>">
+        <label class="form-control-label" for="registration-form-phone">
+            <isprint value="${pdict.FriendDataForm.phone.label}" encoding="htmlcontent" />
+        </label>
+        <input type="tel" class="form-control" id="registration-form-phone"
+            data-missing-error="${Resource.msg('error.message.required', 'forms', null)}"
+            data-pattern-mismatch="${Resource.msg('error.message.parse.phone.profile.form', 'forms', null)}"
+            data-range-error="${Resource.msg('error.message.50orless', 'forms', null)}"
+            aria-describedby="form-phone-error" <isprint value=${pdict.FriendDataForm.phone.attributes}
+            encoding="off" />
+        placeholder="${Resource.msg('example.phone', 'forms', null)}">
+        <div class="invalid-feedback" id="form-phone-error"></div>
+    </div>
+
+    <input type="hidden" name="${pdict.csrf.tokenName}" value="${pdict.csrf.token}" />
+
+    <button type="submit" class="btn btn-block btn-primary">
+        ${Resource.msg('button.createaccount.registration', 'registration', null)}
+    </button>
+    <div class="privacy-policy">
+        ${Resource.msg('description.privacypolicy.registration', 'registration', null)}
+        <a href="${'#'}">
+            ${Resource.msg('link.privacypolicy.registration', 'registration', null)}
+        </a>
+    </div>
+</form>
