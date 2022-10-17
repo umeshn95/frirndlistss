@@ -24,54 +24,19 @@
                 <div class="col-sm-8 col-md-6">
                     <div class="card">
                         <div class="card-header">
-                            <h2 class="address-heading pull-left">${address.ID == pdict.addressBook[0].address.ID ? pdict.addressBook[0].address.ID+' ('+Resource.msg('label.addressbook.defaultaddress','account',null)+')' : address.ID}</h2>
+                            <h2 class="address-heading pull-left">${address.custom.friendNameU}</h2>
                             <a href="${URLUtils.url('AddFriend-EditAddress', 'addressId', address.ID)}" class="pull-right" aria-label="${Resource.msg('label.addressbook.editaddress','account',null)} : ${address.ID == pdict.addressBook[0].address.ID ? pdict.addressBook[0].address.ID+' ('+Resource.msg('label.addressbook.defaultaddress','account',null)+')' : address.ID}">${Resource.msg('link.edit','account',null)}</a>
                         </div>
                         <div class="card-body card-body-positioning">
 
-                        <table>
-  <tr>
-    <th>Friend Name</th>
-    <th>Nickname</th>
-    <th>Contact</th>
-  </tr>
-  <tr>
-    <td>Alfreds Futterkiste</td>
-    <td>Maria Anders</td>
-    <td>Germany</td>
-  </tr>
-  <tr>
-    <td>Centro comercial Moctezuma</td>
-    <td>Francisco Chang</td>
-    <td>Mexico</td>
-  </tr>
-  <tr>
-    <td>Ernst Handel</td>
-    <td>Roland Mendel</td>
-    <td>Austria</td>
-  </tr>
-  <tr>
-    <td>Island Trading</td>
-    <td>Helen Bennett</td>
-    <td>UK</td>
-  </tr>
-  <tr>
-    <td>Laughing Bacchus Winecellars</td>
-    <td>Yoshi Tannamuri</td>
-    <td>Canada</td>
-  </tr>
-  <tr>
-    <td>Magazzini Alimentari Riuniti</td>
-    <td>Giovanni Rovelli</td>
-    <td>Italy</td>
-  </tr>
-</table>
-                            <div>${address.custom.friendName} ${address.custom.friendName}</div>
-                            <div>${address.custom.friendName}</div>
+                            <div>name: ${address.custom.friendNameU} </div>
+                            <div>Nickname:${address.custom.friendNicknameU}</div>
+                            <div>Date of birth:${address.custom.friendDobU}</div>
+                            
                             <isif condition="${address.address2 !== null}">
-                                <div>${address.address2}</div>
+                                <div>${aaddress.custom.friendPhoneU}</div>
                             </isif>
-                            <div>${address.custom.phone}</div>
+                            <div> Phone No.${address.custom.friendPhoneU}</div>
                             <isif condition="${address.ID !== pdict.addressBook[0].address.ID}">
                                 <div class="card-make-default-link">
                                     <a href="${URLUtils.url('Address-SetDefault', 'addressId', address.ID)}" class="normal" aria-label="${Resource.msg('label.addressbook.makedefaultaddress','account',null)}">${Resource.msg('link.addressbook.makedefault','account',null)}</a>
@@ -81,7 +46,6 @@
                                 type="button"
                                 class="remove-btn remove-address btn-light"
                                 data-toggle="modal"
-                                data-target="#deleteAddressModal"
                                 data-id="${address.ID}"
                                 data-url="${pdict.actionUrls.deleteActionUrl}"
                                 aria-label="${Resource.msg('label.addressbook.deleteaddress','account',null)}"

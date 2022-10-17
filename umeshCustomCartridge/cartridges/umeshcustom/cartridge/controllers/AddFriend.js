@@ -46,8 +46,11 @@ server.get('List', userLoggedIn.validateLoggedIn, consentTracking.consent, funct
     var Transaction = require('dw/system/Transaction');
     var ProductListMgr = require('dw/customer/ProductListMgr');
     var Lis;
+    var Tis;
+    var ProductList = require('dw/customer/ProductList');
        Transaction.wrap(()=>{
-         Lis = ProductListMgr.getProductLists(customer,100);
+          Tis = ProductListMgr.getProductLists(customer,100);
+            Lis = Tis[0].items
        })
 
     var actionUrls = {
@@ -135,14 +138,16 @@ server.get(
         var ProductListMgr = require('dw/customer/ProductListMgr');
         var addressId = req.querystring.addressId;
         var addressForm = server.forms.getForm('friendlist');
-var updateFriendList = ProductListMgr.getProductList(addressId);
+            var updateFriendList = ProductListMgr.getProductLists(customer,100);
+
+            updateFriendList=  updateFriendList[0].getItem(addressId);
 
 
         addressForm.copyFrom({
-            name:updateFriendList.custom.friendName,
-            date:updateFriendList.custom.friendDOB,
-            phone:updateFriendList.custom.friendPhone,
-            nickname:updateFriendList.custom.friendNickname
+            name:updateFriendList.custom.friendNameU,
+            date:updateFriendList.custom.friendDobU,
+            phone:updateFriendList.custom.friendPhoneU,
+            nickname:updateFriendList.custom.friendNicknameU
         });
 
         res.render('account/editFriendsData', {
@@ -193,31 +198,76 @@ var updateFriendList = ProductListMgr.getProductList(addressId);
 server.post('SaveFriend', csrfProtection.validateAjaxRequest, function (req, res, next) {
     var Transaction = require('dw/system/Transaction');
     var ProductListMgr = require('dw/customer/ProductListMgr');
+    var ProductMgr = require('dw/catalog/ProductMgr');
     var addressForm = server.forms.getForm('friendlist');
     var addressFormObj = addressForm.toObject();
     addressFormObj.addressForm = addressForm;
 
+    var setFriendEdit = ProductListMgr.getProductLists(customer,100);
+   
+if(setFriendEdit.length == 0 || !setFriendEdit)    
+{
+       Transaction.wrap(function () {
+        var friendProductData = ProductMgr.getProduct("friendProduct");
+        var friendDataList = ProductListMgr.createProductList(customer,100);
+    var mmm =   friendDataList.createProductItem(friendProductData);
+    mmm.custom.friendNameU = addressFormObj.name;
+    mmm.custom.friendDobU = addressFormObj.date;
+    mmm.custom.friendPhoneU = addressFormObj.phone;
+    mmm.custom.friendNicknameU = addressFormObj.nickname;
+
+         });
+}
+else{
     if (req.querystring.addressId) {
 
         Transaction.wrap(function () {
-            var setFriendEdit = ProductListMgr.getProductList(req.querystring.addressId);
+           setFriendEdit= setFriendEdit[0].getItem(req.querystring.addressId)
 
-        setFriendEdit.custom.friendName=addressFormObj.name;
-        setFriendEdit.custom.friendDOB =addressFormObj.date;
-        setFriendEdit.custom.friendPhone= addressFormObj.phone;
-        setFriendEdit.custom.friendPhone = addressFormObj.nickname;
-
-        });
-    }else{
-        Transaction.wrap(function () {
-            var friendData = ProductListMgr.createProductList(customer,100)
-           friendData.custom.friendName = addressFormObj.name;
-           friendData.custom.friendDOB = addressFormObj.date;
-           friendData.custom.friendPhone = addressFormObj.phone;
-           friendData.custom.friendNickname = addressFormObj.nickname;
+        setFriendEdit.custom.friendNameU=addressFormObj.name;
+        setFriendEdit.custom.friendDobU =addressFormObj.date;
+        setFriendEdit.custom.friendPhoneU= addressFormObj.phone;
+        setFriendEdit.custom.friendPhoneU = addressFormObj.nickname;
 
         });
     }
+        else{
+            Transaction.wrap(function () {
+                var friendProductData = ProductMgr.getProduct("friendProduct");
+              var friendItems = setFriendEdit[0].createProductItem(friendProductData);
+            //    var friendItems =  setFriendEdit[0].getItems()
+               friendItems.custom.friendNameU = addressFormObj.name;
+               friendItems.custom.friendDobU = addressFormObj.date;
+               friendItems.custom.friendPhoneU = addressFormObj.phone;
+               friendItems.custom.friendNicknameU = addressFormObj.nickname;
+        
+                });
+        }
+
+     
+}
+
+    // if (req.querystring.addressId) {
+
+    //     Transaction.wrap(function () {
+    //         var setFriendEdit = ProductListMgr.getProductList(req.querystring.addressId);
+
+    //     setFriendEdit.custom.friendName=addressFormObj.name;
+    //     setFriendEdit.custom.friendDOB =addressFormObj.date;
+    //     setFriendEdit.custom.friendPhone= addressFormObj.phone;
+    //     setFriendEdit.custom.friendPhone = addressFormObj.nickname;
+
+    //     });
+    // }else{
+    //     Transaction.wrap(function () {
+    //         var friendData = ProductListMgr.createProductList(customer,100)
+    //        friendData.custom.friendName = addressFormObj.name;
+    //        friendData.custom.friendDOB = addressFormObj.date;
+    //        friendData.custom.friendPhone = addressFormObj.phone;
+    //        friendData.custom.friendNickname = addressFormObj.nickname;
+
+    //     });
+    // }
     
     res.redirect(URLUtils.url('AddFriend-List'))
      next();
@@ -239,8 +289,6 @@ server.get('DeleteAddress', userLoggedIn.validateLoggedInAjax, function (req, re
     var CustomerMgr = require('dw/customer/CustomerMgr');
     var Transaction = require('dw/system/Transaction');
     var ProductListMgr = require('dw/customer/ProductListMgr');
-    var accountHelpers = require('*/cartridge/scripts/helpers/accountHelpers');
-
     var data = res.getViewData();
     if (data && !data.loggedin) {
         res.json();
@@ -248,13 +296,16 @@ server.get('DeleteAddress', userLoggedIn.validateLoggedInAjax, function (req, re
     }
 
     var addressId = req.querystring.addressId;
-   var friendlistToRemove = ProductListMgr.getProductList(addressId)
+    var setFriendEdit = ProductListMgr.getProductLists(customer,100);
+   
 //    var friendlistToRemo = ProductListMgr.getProductList(addressId)
     Transaction.wrap(()=>{
-        ProductListMgr.removeProductList(friendlistToRemove)
+
+setFriendEdit[0].removeItem(setFriendEdit[0].getItem(addressId));
+
     })
-   
-    return next();
+    
+     next();
 });
 
 /**
